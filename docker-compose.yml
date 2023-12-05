@@ -1,0 +1,42 @@
+version: '3'
+
+
+services:
+  backend:
+    image: nachopad/backend:latest
+    container_name: backend-container
+    ports:
+      - "3000:3000"
+    networks:
+      - birabar
+
+
+  frontend:
+    image: nachopad/frontend:latest
+    container_name: frontend-container
+    ports:
+      - "80:80"
+    networks:
+      - birabar
+
+
+
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower-container
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=10 # Intervalo de tiempo en el que comprueba cambios
+    depends_on:
+      - backend   # Asegurar que el servicio backend esté en funcionamiento
+      - frontend  # Asegurar que el servicio frontend esté en funcionamiento
+    restart: always
+
+
+
+
+networks:
+  birabar:
+    driver: bridge
