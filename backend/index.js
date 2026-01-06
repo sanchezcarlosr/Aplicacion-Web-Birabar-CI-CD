@@ -3,13 +3,54 @@ const cors = require('cors');
 const { mongoose } = require('./database');
 var app = express();
 
+const swaggerUi = require('swagger-ui-express'); 
+const swaggerJsdoc = require('swagger-jsdoc');
+
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Birabar API',
+            version: '1.0.0',
+            description: 'Documentación de la API de Birabar'
+        },
+        components: {
+            schemas:{
+                Rol: {
+                    type: 'object',
+                    properties: {
+                        nombre: {
+                            type: 'string',
+                            description: 'El nombre del rol',
+                        },
+                        estado: {
+                            type: 'boolean',
+                            description: 'Estado del rol (activo/desactivado)'
+                        }
+                    },
+                    required: ['nombre']
+                }
+            }
+        },
+        servers: [
+            {
+                url: 'http://localhost:3000',
+            },
+        ],
+    },
+    apis: ['./routes/*.js'],
+};
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
 var bodyParser = require('body-parser');
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 //middlewares
 app.use(express.json());
-app.use(cors({ origin: 'http://localhost' }));
+app.use(cors({ origin: 'http://localhost:4200' }));
 //app.use(cors({ origin: 'http://100.24.204.191:4200' }));
 
 //Cargamos el modulo de direccionamiento de rutas

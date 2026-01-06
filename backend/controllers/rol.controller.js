@@ -109,6 +109,7 @@ rolCtrl.getRoles = async (request, response) => {
  * @returns {Promise<void>} Una promesa que resuelve cuando se obtiene el rol y se envía la respuesta.
  */
 rolCtrl.getRolById = async (request, response) => {
+    console.log("El id que llego es: ", request.params.id)
     try {
         const rol = await Rol.findOne({_id: request.params.id, estado:true});
         response.json(rol);

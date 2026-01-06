@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const URI = 'mongodb+srv://nachopad:Panyqueso2208@birabar-cluster.jljcenp.mongodb.net/restobarbd?retryWrites=true&w=majority';
+const URI = 'mongodb://localhost:27017/restobar';
 mongoose.connect(URI)
   .then(db => console.log('DB is connected'))
   .catch(err => console.error(err));
